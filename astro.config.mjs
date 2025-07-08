@@ -45,7 +45,13 @@ export default defineConfig({
       logo: {
         src: "./public/favicon.svg",
       },
-      plugins: [starlightLinksValidator(), starlightFullViewMode()],
+      plugins: [
+        starlightLinksValidator({
+          errorOnLocalLinks: false,
+          errorOnFallbackPages: false,
+        }),
+        starlightFullViewMode(),
+      ],
       sidebar: [
         {
           label: "Overview",

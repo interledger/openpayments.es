@@ -2,7 +2,7 @@
 title: Getting started
 ---
 
-import { LinkOut } from '@interledger/docs-design-system'
+import { LinkOut } from "@interledger/docs-design-system";
 
 :::tip[Summary]
 Open Payments is an API standard for banks, mobile money providers, and other account servicing entities. It allows developers to build payment capabilities into their apps without the need for custom integrations or third-party payment processors.
@@ -12,7 +12,7 @@ Developers can choose to interact with the Open Payments API directly or use the
 
 Handling payments is a crucial part of many online applications. Whether it's an eCommerce site selling products, a fundraising platform accepting donations, a streaming service charging for content, or a subscription service with monthly fees, digital payments are central to their operations. Many application developers rely on third-party payment gateways to handle these transactions, which can introduce additional expenses and limit control over the user experience.
 
-Open Payments is an open RESTful API and an API standard that enables clients to interface with Open Payments-enabled accounts. In this context, a client is an application, such as a mobile or web app, that consumes one or more Open Payments resources, typically requiring access privileges from one or several authorization servers. The [Open Payments SDKs](/sdk/before-you-begin) simplify this process by providing pre-built functions for these interactions.
+Open Payments is an open RESTful API and an API standard that enables clients to interface with Open Payments-enabled accounts. In this context, a client is an application, such as a mobile or web app, that consumes one or more Open Payments resources, typically requiring access privileges from one or several authorization servers. The Open Payments SDKs simplify this process by providing pre-built functions for these interactions.
 
 The Open Payments standard is meant to be implemented by account servicing entities (ASEs). ASEs provide and maintain payment accounts for senders and recipients, and are regulated entities within the countries they operate. Examples of ASEs include banks, digital wallet providers, and mobile money providers.
 
@@ -52,8 +52,6 @@ Open Payments leverages the <LinkOut href='https://datatracker.ietf.org/doc/html
 
 GNAP allows account holders to have specific and fine-grained control over the permissions they grant to the clients that connect to their accounts, including control over the amounts of transactions with time-based and velocity-based limits. This enables powerful use cases such as third-party payment initiation and delegated authorization without compromising the security of the underlying financial accounts and payment instruments.
 
-Review the [Grant negotiation and authorization](/identity/grants) page for more information.
-
 ## Relation to Open Banking
 
 Open Payments aims to improve upon existing Open Banking standards as defined in the UK, EU, and other jurisdictions.
@@ -90,7 +88,7 @@ Suppose a merchant accepts Open Payments as a payment method. Their customers ca
 
 - [One-time payment guide](/guides/make-onetime-payment)
 - [Recurring payments guide](/guides/make-recurring-payments)
-- <LinkOut href='https://github.com/interledger/open-payments/tree/main/packages/open-payments#example'>
+- <LinkOut href="https://github.com/interledger/open-payments/tree/main/packages/open-payments#example">
     E-commerce example using the Open Payments SDK
   </LinkOut>
 

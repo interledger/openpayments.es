@@ -2,13 +2,8 @@
 title: Open Payments flow
 ---
 
-import {
-  MermaidWrapper,
-  Mermaid,
-  LinkOut,
-  Tooltip
-} from '@interledger/docs-design-system'
-import Interactive from '/src/partials/diagram-interactive-grant.mdx'
+import { MermaidWrapper, Mermaid, LinkOut, Tooltip } from "@interledger/docs-design-system";
+import Interactive from "/src/partials/diagram-interactive-grant.mdx";
 
 :::tip[Summary]
 When a client issues payment instructions, numerous interactions between the client and servers are needed to obtain grants, verify identities, and create the resources required to complete a transaction.
@@ -18,14 +13,14 @@ This page provides a high-level look at the API calls and interactions that occu
 
 ### Assumptions
 
-- The <Tooltip content="Such as a mobile or web application or service" client:load>client's</Tooltip> user is the sender.
+- The <Tooltip content="Such as a mobile or web application or service">client's</Tooltip> user is the sender.
 - The client already has the sender's Open Payments-enabled account details and is able to send payments on their behalf.
 
 ## Get account details
 
 A client retrieves public details about a recipient's Open Payments-enabled account by issuing a <LinkOut href='/apis/wallet-address-server/operations/get-wallet-address/'>GET request</LinkOut> to the recipient's wallet address. Details include the asset code and scale of the underlying account, as well as the authorization and resource server URLs which the client needs in order to set up a payment to the recipient.
 
-<MermaidWrapper client:load>
+<MermaidWrapper>
 
 <Mermaid
   graph={`sequenceDiagram
@@ -42,9 +37,9 @@ A client retrieves public details about a recipient's Open Payments-enabled acco
 
 ## Incoming payment
 
-The client first <LinkOut href='/apis/auth-server/operations/post-request'>requests/receives a grant</LinkOut> from the authorization server of the recipient's <Tooltip content="account servicing entity" client:load>ASE</Tooltip> to create an `incoming-payment` resource. The client then sends a request to the ASE's resource server to <LinkOut href='/apis/resource-server/operations/create-incoming-payment/'>create the resource</LinkOut>. When created, the resource server returns unique payment details the client will use to address one or more payments to the recipient.
+The client first <LinkOut href='/apis/auth-server/operations/post-request'>requests/receives a grant</LinkOut> from the authorization server of the recipient's <Tooltip content="account servicing entity">ASE</Tooltip> to create an `incoming-payment` resource. The client then sends a request to the ASE's resource server to <LinkOut href='/apis/resource-server/operations/create-incoming-payment/'>create the resource</LinkOut>. When created, the resource server returns unique payment details the client will use to address one or more payments to the recipient.
 
-<MermaidWrapper client:load>
+<MermaidWrapper>
 
 <Mermaid
   graph={`sequenceDiagram
@@ -64,9 +59,9 @@ The client first <LinkOut href='/apis/auth-server/operations/post-request'>reque
 
 ## Quote
 
-The client <LinkOut href='/apis/auth-server/operations/post-request'>requests/receives a grant</LinkOut> from the authorization server of the sender's <Tooltip content="Account servicing entity" client: load><span>ASE</span></Tooltip> to create a `quote` resource. The client then sends a request to the resource server to <LinkOut href='/apis/resource-server/operations/create-quote'>create the resource</LinkOut>. When created, the resource server returns, among other things, a quote `id` and the amount it will cost to make the payment.
+The client <LinkOut href='/apis/auth-server/operations/post-request'>requests/receives a grant</LinkOut> from the authorization server of the sender's <Tooltip content="Account servicing entity"><span>ASE</span></Tooltip> to create a `quote` resource. The client then sends a request to the resource server to <LinkOut href='/apis/resource-server/operations/create-quote'>create the resource</LinkOut>. When created, the resource server returns, among other things, a quote `id` and the amount it will cost to make the payment.
 
-<MermaidWrapper client:load>
+<MermaidWrapper>
 
 <Mermaid
   graph={`sequenceDiagram
@@ -86,7 +81,7 @@ The client <LinkOut href='/apis/auth-server/operations/post-request'>requests/re
 
 ## Outgoing payment
 
-Before an outgoing payment resource can be created on the sender's account, Open Payments requires the client to send an <LinkOut href='/apis/auth-server/operations/post-request'>interactive grant request</LinkOut> to the authorization server of the sender's <Tooltip content="Account servicing entity" client: load><span>ASE</span></Tooltip>.
+Before an outgoing payment resource can be created on the sender's account, Open Payments requires the client to send an <LinkOut href='/apis/auth-server/operations/post-request'>interactive grant request</LinkOut> to the authorization server of the sender's <Tooltip content="Account servicing entity"><span>ASE</span></Tooltip>.
 
 An interactive grant requires explicit consent be collected from the sender before an access token is issued. While the client must facilitate the interaction, the authorization server and identity provider (IdP) of the sender's ASE are responsible for the interface and collecting consent.
 
@@ -100,7 +95,7 @@ For outgoing payments, explicit user consent is required before proceeding with 
 
 Once an access token is acquired, the client can request the creation of the <LinkOut href='/apis/resource-server/operations/create-outgoing-payment'>outgoing-payment resource</LinkOut>. The setup of the payment is complete and the Open Payments flow ends after the resource is created.
 
-<MermaidWrapper client:load>
+<MermaidWrapper>
 
 <Mermaid
   graph={`sequenceDiagram
@@ -120,7 +115,7 @@ Once an access token is acquired, the client can request the creation of the <Li
 
 To provide a user with their transaction history, the client can retrieve a list of the user's <LinkOut href='/apis/resource-server/operations/list-incoming-payments/'>incoming (received) payments</LinkOut> and <LinkOut href='/apis/resource-server/operations/list-outgoing-payments/'>outgoing (sent) payments</LinkOut>.
 
-<MermaidWrapper client:load>
+<MermaidWrapper>
 
 <Mermaid
   graph={`sequenceDiagram
@@ -138,7 +133,7 @@ To provide a user with their transaction history, the client can retrieve a list
 
 Similarly, the client can provide the user with details about a specific <LinkOut href='/apis/resource-server/operations/get-incoming-payment'>incoming</LinkOut> or <LinkOut href='/apis/resource-server/operations/get-outgoing-payment'>outgoing</LinkOut> payment.
 
-<MermaidWrapper client:load>
+<MermaidWrapper>
 
 <Mermaid
   graph={`sequenceDiagram
@@ -158,11 +153,9 @@ Similarly, the client can provide the user with details about a specific <LinkOu
 
 This diagram brings the aforementioned concepts together, except for getting transaction history, to present a full transaction sequence without delving too deeply into the contents of each request and response. A link to view a larger version of the diagram is provided at the bottom of the page.
 
-As shown below, both the sender and the recipient's ASEs must operate their own authorization and resource servers. Grant requests for incoming payment and quote resources are typically non-interactive. A grant request for an outgoing payment resource requires explicit consent from the sender (e.g., the client's user), which is obtained through the sender's [identity provider](/identity/idp/).
+As shown below, both the sender and the recipient's ASEs must operate their own authorization and resource servers. Grant requests for incoming payment and quote resources are typically non-interactive. A grant request for an outgoing payment resource requires explicit consent from the sender (e.g., the client's user), which is obtained through the sender's identity provider.
 
-More information about grant interaction flows can be found in the [Grant negotiation and authorization](/identity/grants) page.
-
-<MermaidWrapper client:load>
+<MermaidWrapper>
 
 <Mermaid
   graph={`sequenceDiagram
