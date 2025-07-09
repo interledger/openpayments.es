@@ -5,10 +5,10 @@ import starlightFullViewMode from "starlight-fullview-mode";
 
 // https://astro.build/config
 export default defineConfig({
-  site: "https://openpayments.dev",
+  site: "https://openpayments.es",
   integrations: [
     starlight({
-      title: "Open Payments",
+      title: "Pagos Abiertos",
       description: "An API for open access to financial accounts to send and receive payments.",
       locales: {
         root: {
@@ -56,7 +56,6 @@ export default defineConfig({
         {
           label: "Overview",
           items: [
-            { label: "Getting started", link: "/overview/getting-started/" },
             {
               label: "Concepts",
               collapsed: false,
