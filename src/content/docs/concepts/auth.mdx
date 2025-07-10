@@ -1,48 +1,46 @@
 ---
-title: Authorization
+title: Autorización
 parent: Concepts
 ---
 
 import { LinkOut, Tooltip } from "@interledger/docs-design-system";
 
-:::tip[Summary]
-Authorization in Open Payments refers to the process by which a client obtains permission from a resource owner to access and perform operations on protected resources.
+:::tip[¿Qué es una autorización en el contexto de Pagos Abiertos?]
+La autorización en Open Payments se refiere al proceso mediante el cual un cliente obtiene permiso del propietario de un recurso para acceder y realizar operaciones en recursos protegidos.
 :::
 
-Open Payments leverages the <LinkOut href='https://datatracker.ietf.org/doc/html/draft-ietf-gnap-core-protocol'>Grant Negotiation and Authorization Protocol (GNAP)</LinkOut> as the mechanism by which the piece of software, known as a client instance (or client for short), is delegated authorization to use the Open Payments APIs to interface with supported accounts.
+Open Payments aprovecha el <LinkOut href='https://datatracker.ietf.org/doc/html/draft-ietf-gnap-core-protocol'>Protocolo de negociación y autorización de concesiones (GNAP)</LinkOut> como el mecanismo mediante el cual se delega en el software, conocido como instancia de cliente (o cliente para abreviar), la autorización para usar las API de Open Payments para interactuar con las cuentas compatibles.
 
-## Authorization server
+## Servidor de Autorización
 
-The authorization server grants permission for a client to access the Open Payments APIs and the `incoming-payment`, `quote`, and `outgoing-payment` resources. It does this by issuing access tokens, which represent a set of access rights and/or attributes granted to the client. With the appropriate access tokens, the client can perform allowed operations, such as creating incoming and outgoing payments, on behalf of the resource owner (RO).
+El servidor de autorización otorga permiso para que un cliente acceda a las API de pagos abiertos y los recursos de pagos entrantes `incoming-payment` , cotización `quote` y pagos salientes `outgoing-payment`. Lo hace mediante la emisión de tokens de acceso, que representan un conjunto de derechos de acceso y/o atributos otorgados al cliente. Con los tokens de acceso apropiados, el cliente puede realizar operaciones permitidas, como crear pagos entrantes y salientes, en nombre del propietario del recurso (RO).
 
-### Relationship between grants and access tokens
+### Relación entre las subvenciones y los tokens de acceso
 
-A **grant** is an authorization issued by the RO that allows a client to access specific resources. The grant specifies the type of actions the client is allowed to perform. Grants may require user interaction and can be contingent on the RO's consent. The authorization server validates the grant each time the client uses their access token.
+A ** subvención ** es una autorización emitida por el RO que permite a un cliente acceder a recursos específicos. La subvención especifica el tipo de acciones que el cliente puede realizar. Las subvenciones pueden requerir la interacción del usuario y pueden depender del consentimiento de la RO. El servidor de autorización valida la subvención cada vez que el cliente usa su token de acceso.
 
-An **access token** is issued after a grant request is approved by the authorization server. This token serves as a credential that the client uses to authenticate itself when making requests to access protected resources. The access token contains information about the permissions granted, including the specific actions the client can perform and the resources it can access.
+Un token de acceso **access token** se emite después de que el servidor de autorización aprueba una solicitud de subvención. Este token sirve como una credencial que el cliente utiliza para autenticarse al hacer solicitudes para acceder a los recursos protegidos. El token de acceso contiene información sobre los permisos otorgados, incluidas las acciones específicas que el cliente puede realizar y los recursos a los que puede acceder.
 
-## Grant types
+## Tipos de subvenciones
 
-This section outlines the different types of grants that clients can request within Open Payments. While the flow often begins with an incoming payment grant, there are scenarios where other grant types may be requested first.
+Esta sección describe los diferentes tipos de subvenciones que los clientes pueden solicitar dentro de los pagos abiertos. Si bien el flujo a menudo comienza con una subvención de pago entrante, hay escenarios en los que primero se pueden solicitar otros tipos de subvenciones.
 
-### incoming-payment
+### Pagos Entrantes (incoming-payment)
 
-A client typically begins the Open Payments flow by requesting an incoming payment grant from the authorization server on the _recipient_ side. However, there are instances where the client may request an outgoing payment grant first, such as in the case of Web Monetization.
+Un cliente generalmente comienza el flujo de pagos abiertos solicitando una subvención de pago entrante del servidor de autorización en el lado que recibe _recipient_ side. Sin embargo, hay casos en los que el cliente puede solicitar una subvención de pago saliente primero, como en el caso de la Monetización Web.
 
-The client can request a single grant to create multiple incoming payments for different Open Payments-enabled accounts as long as each account belongs to the same <Tooltip content="Account servicing entity"><span>ASE</span></Tooltip>.
+El Cliente puede solicitar una sola subvención para crear múltiples pagos entrantes para diferentes cuentas de pagos abiertos siempre que cada cuenta pertenezca a la misma <Tooltip content="Account servicing entity"><span>ASE</span></Tooltip>.
 
-Incoming payment grants are non-interactive by default, meaning interaction by an individual (typically the client’s user) is not required for the authorization server to issue an access token.
+### Cotización (quote)
 
-### quote
+Después de que el cliente recibe una subvención de pago entrante y se crea un recurso de pago entrante en la cuenta del destinatario, el cliente solicita una subvención de cotización del servidor de autorización en el lado del servidor _sender_ side. El cliente puede solicitar una sola subvención para crear múltiples cotizaciones para diferentes cuentas de pagos abiertos siempre que cada cuenta pertenezca a la misma <Tooltip content="Account servicing entity"><span>ASE</span></Tooltip>.
 
-After the client receives an incoming payment grant and an incoming payment resource is created on the recipient's account, the client requests a quote grant from the authorization server on the _sender_ side. The client can request a single grant to create multiple quotes for different Open Payments-enabled accounts as long as each account belongs to the same <Tooltip content="Account servicing entity"><span>ASE</span></Tooltip>.
+Las subvenciones de cotización no son interactivas de forma predeterminada, lo que significa que no es necesaria la interacción de un individuo (generalmente el usuario del cliente) para que el servidor de autorización emita un token de acceso.
 
-Quote grants are non-interactive by default, meaning interaction by an individual (typically the client’s user) is not required for the authorization server to issue an access token.
+### Pagos Saliente (outgoing-payment)
 
-### outgoing-payment
+Habiendo progresado a través del pago entrante y las porciones de cotización del flujo de pagos abiertos, el cliente está listo para solicitar una subvención de pago saliente del servidor de autorización en el lado del servidor, _sender_ side.
 
-Having progressed through the incoming payment and quote portions of the Open Payments flow, the client is ready to request an outgoing payment grant from the authorization server on the _sender_ side.
+Los pagos abiertos requieren que las solicitudes de subvenciones de pago salientes sean interactivas. Cuando una solicitud de subvención es interactiva, significa la interacción explícita por parte de un individuo (generalmente el usuario del cliente) es un paso requerido en el proceso de delegación.
 
-Open Payments requires outgoing payment grant requests to be interactive. When a grant request is interactive, it means explicit interaction by an individual (typically the client’s user) is a required step in the delegation process.
-
-After a successful interaction, the client must issue a Grant Continuation request so the authorization server knows to issue an access token.
+Después de una interacción exitosa, el cliente debe emitir una solicitud de continuación de subvención para que el servidor de autorización sepa emitir un token de acceso.

@@ -1,66 +1,66 @@
 ---
-title: Wallet addresses
+title: Direcciones de Billetera
 parent: Concepts
 ---
 
-:::tip[Summary]
-A wallet address is a secure, sharable identifier for an Open Payments-enabled account. Each wallet address acts a service endpoint into the APIs, allowing clients to interact with the underlying account.
+:::tip[¿Qué es una Dirección de Billetera?]
+Una dirección de billetera es un identificador seguro y con la funcionalidad de ser compartido en una cuenta de Pagos Abiertos. Cada dirección de billetera actúa como punto de acceso de servicio en las API, lo que permite a los clientes interactuar con la cuenta subyacente.
 :::
 
-At the heart of all interactions in Open Payments is an Open Payments-enabled account. Every Open Payments-enabled account is identified by one or more URLs. These URLs are not only account identifiers, but also service endpoints for gaining access to the Open Payments APIs. These URLs are called **wallet addresses**. Not all URLs are wallet addresses, but all wallet addresses are URLs.
+En el centro de todas las interacciones en Pagos  se encuentra una cuenta habilitada para Pagos Abiertos. Cada cuenta habilitada para Pagos Abiertos se identifica mediante una o más URL. Estas URL no solo son identificadores de cuenta, sino también puntos finales de servicio para acceder a las API de Pagos Abiertos. Estas URL se denominan direcciones de billetera. No todas las URL son direcciones de billetera, pero todas las direcciones de billetera son URL.
 
-## What makes a wallet address?
+## ¿Cómo está construida una dirección de Billetera?
 
-A URL is only a wallet address if it meets the following criteria:
+Una URL solo es una dirección de billetera si cumple los siguientes criterios:
 
-- The server handling the HTTP requests to the URL supports the Open Payments protocol
-- The URL uses the `https` protocol and has no `user-info`, `port`, `query string`, or `fragment` parts
+- El servidor que gestiona las solicitudes HTTP admite el protocolo de Pagos Abiertos en la URL.
+- La URL utiliza el protocolo `https` y no contiene partes de `user-info`, `port`, `query string`, o `fragment`. 
 
-### Verifying a wallet address
+### Verificación de la dirección de billetera
 
-The quickest way to test if a URL is a wallet address is to make an HTTP `GET` request to the URL with an `Accept` header value of `application/json`.
+La forma más rápida de probar si una URL es una dirección de billetera es realizar una solicitud HTTP `GET` a la URL con un valor de encabezado `Accept` en `application/json`.
 
 ```http
 curl --request GET \
- 	--url https://wallet.example.com/alice \
+ 	--url https://billetera.ejemplo.com/maria \
  	--header 'accept: application/json'
 ```
 
-If the URL is a wallet address, the response will provide details about the underlying Open Payments-enabled account, including the URL of the grant request endpoint (the `authServer`). The grant request endpoint is used to get access tokens to connect to the account via the Open Payments APIs.
+Si la URL es una dirección de billetera, la respuesta proporcionará detalles sobre la cuenta subyacente habilitada para Pagos Abiertos, incluyendo la URL del punto de acceso de la solicitud de concesión (`authServer`). Este punto de acceso se utiliza para obtener tokens de acceso para conectarse a la cuenta mediante las API de Pagos Abiertos.
 
 ```http
 HTTP/1.1 200 Success
 Content-Type: application/json
 
 {
-  "id": "https://wallet.example.com/alice",
-  "publicName": "Alice",
+  "id": "https://billetera.ejemplo.com/maria",
+  "publicName": "Maria",
   "assetCode": "USD",
   "assetScale": 2,
-  "authServer": "https://auth.wallet.example.com"
+  "authServer": "https://auth.billetera.ejemplo.com"
 }
 ```
 
-## Wallet address server
+## Servidor de direcciones de billetera
 
-When setting up a payment, the client must obtain the wallet address for both the sender and the recipient. Since the sender is typically the client's user, the client can obtain the sender's wallet address during an onboarding process, for example. The sender must be authenticated by their account servicing entity (ASE) to grant the client the permission it needs to access their Open Payments-enabled account.
+Al configurar un pago, el cliente debe obtener la dirección de la billetera tanto del remitente como del destinatario. Dado que el remitente suele ser el usuario del cliente, este puede obtenerla durante el proceso de incorporación, por ejemplo. El remitente debe estar autenticado por su entidad gestora de cuentas (ASE) para otorgar al cliente el permiso necesario para acceder a su cuenta habilitada para Pagos Abiertos.
 
-A wallet address server is an API endpoint that retrieves public information about a wallet address, including its associated public keys.
+Un servidor de direcciones de billetera es un punto final de API que recupera información pública sobre una dirección de billetera, incluidas sus claves públicas asociadas.
 
-## Privacy and security
+## Privacidad y Seguridad
 
-A wallet address acts as a proxy identifier (alias) for an underlying financial account. If permitted by an ASE, a single account can have multiple wallet addresses. Allowing account holders to generate unique wallet addresses for every client they interact with can help prevent a single address from becoming a tracking vector.
+Una dirección de billetera actúa como un identificador proxy (alias) para una cuenta financiera subyacente. Si un ASE lo permite, una misma cuenta puede tener varias direcciones de billetera. Permitiendo que los titulares de cuentas generen direcciones de billetera únicas para cada cliente con el que interactúan y ayudan a evitar que una sola dirección se convierta en un vector de seguimiento.
 
-In addition to the "one account to one wallet address" and "one account to multiple wallet addresses" models, an ASE can allow a single wallet address to represent all of a user’s accounts. For example, imagine a user has three accounts with a digital wallet provider. The provider issues the user a single wallet address. When a payment is sent to the wallet address, the provider determines which one of the three accounts should receive the payment based on the currency type or some other agreed upon criteria.
+Además de los modelos de "una cuenta a una dirección de billetera" y "una cuenta a múltiples direcciones de billetera", un ASE puede permitir que una sola dirección de billetera represente todas las cuentas de un usuario. Por ejemplo, imaginemos que un usuario tiene tres cuentas con un proveedor de billetera digital. El proveedor le asigna una única dirección de billetera. Cuando se envía un pago a la dirección de billetera, el proveedor determina cuál de las tres cuentas debe recibirlo según el tipo de moneda u otros criterios acordados.
 
-Ultimately, it’s up to the ASE to define the supported configuration of relationships between wallet addresses and user accounts. This loose coupling allows wallet addresses to be disabled or even linked to a new account (although there are considerations that must be made before allowing this) without affecting the underlying account.
+En última instancia, corresponde al ASE definir la configuración compatible de las relaciones entre las direcciones de billetera y las cuentas de usuario. Este acoplamiento flexible permite deshabilitar las direcciones de billetera o incluso vincularlas a una nueva cuenta (aunque se deben tener en cuenta ciertas consideraciones antes de permitirlo) sin afectar la cuenta subyacente.
 
-For any client, a wallet address is as good as an account. Any two distinct wallet addresses should be treated as distinct accounts by clients even if the client is aware that they are proxies for the same underlying account. Permission for a client to access an account via one wallet address is not automatically granted when accessing the same account via another wallet address.
+Para cualquier cliente, una dirección de billetera es tan válida como una cuenta. Cualquier par de direcciones de billetera distintas debe ser tratada como cuentas distintas por los clientes, incluso si el cliente sabe que son proxys de la misma cuenta subyacente. El permiso para que un cliente acceda a una cuenta a través de una dirección de billetera no se otorga automáticamente cuando accede a la misma cuenta a través de otra dirección de billetera.
 
-## Discovery and interaction
+## Payments UX: Visibilidad e Interacción
 
-Using URLs as payment instruments solves two of the biggest issues with existing payments UX: discoverability and interaction.
+Usar URLs como instrumentos de pago resuelve dos de los mayores problemas de la experiencia de usuario (UX) en los pagos actuales: la capacidad descubribilidad y la interacción.
 
-URLs (universal resource locators) have been used on the web for decades to allow clients to directly locate a resource and begin interacting with it via HTTP. A wallet address is both a proxy identifier and a resource locator for the underlying account, used to access the account via the Open Payments APIs and begin interactions with the account’s ASE.
+Las URLs (localizadores universales de recursos) se han utilizado en la web durante décadas para permitir que los clientes localicen directamente un recurso e interactúen con él mediante HTTP. Una dirección de billetera funciona tanto como un identificador proxy como un localizador de recursos para la cuenta subyacente, utilizada para acceder a la cuenta a través de las APIs de Open Payments e iniciar interacciones con el ASE (Entorno Seguro de la Cuenta).
 
-Using URLs as proxies is also preferable to overloading other identifiers, such as email addresses and Mobile Station International Subscriber Directory Numbers (MSISDNs), as these proxies have no standard for interaction. As a result, identifiers like an MSISDN or email require a registry that maps the identifier to an account provider and a mechanism for governing this mapping securely.
+Usar URLs como proxies también es preferible a sobrecargar otros identificadores, como direcciones de correo electrónico o el directorio de teléfonos móviles (MSISDN), ya que estos proxies no cuentan con un estándar para la interacción. Como resultado, identificadores como un MSISDN o un correo electrónico requieren un registro que mapee ese identificador a un proveedor de cuentas y un mecanismo para gobernar de forma segura dicho mapeo.
