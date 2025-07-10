@@ -55,6 +55,9 @@ export default defineConfig({
       sidebar: [
         {
           label: "Overview",
+          translations: {
+            es: "Resumen",
+          },
           items: [
             {
               label: "Concepts",
