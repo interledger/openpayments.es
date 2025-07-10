@@ -46,7 +46,7 @@ El propósito de una cotización es indicar cuánto costará realizar el pago, i
 Existen tres tipos de cotización:
 
 - **Cotización de envío fijo (Fixed-send quote)** - Cotización de envío fijo (Fixed-send quote): Se pagará un monto fijo desde la cuenta del remitente _sender’s_ account. Este tipo requiere un `debitAmount`. Con esta cotización, el pago entrante no puede completarse automáticamente hasta que expire. En lugar de esperar a que expire, el cliente puede emitir una solicitud de "Completar Pago Entrante" (Complete Incoming Payment) <LinkOut href='https://openpayments.dev/apis/resource-server/operations/complete-incoming-payment/'>Complete Incoming Payment request</LinkOut> cuando el pago saliente se haya completado.
-- **Cotización de recepción fija (Fixed-receive quote): ** - El pago entrante ya tiene un `incomingAmount` definido. Para este tipo, el receptor  `receiver` es la URL del recurso de pago entrante `incoming-payment` al que se realizará el abono, indicada por la presencia de `/incoming-payments` en la URL.
+- **Cotización de recepción fija (Fixed-receive quote):** - El pago entrante ya tiene un `incomingAmount` definido. Para este tipo, el receptor  `receiver` es la URL del recurso de pago entrante `incoming-payment` al que se realizará el abono, indicada por la presencia de `/incoming-payments` en la URL.
 
 Un recurso de cotización `quote` creado correctamente da como resultado la generación de un  `id` de cotización en forma de URL.
 
