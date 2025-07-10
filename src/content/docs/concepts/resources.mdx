@@ -1,5 +1,5 @@
 ---
-title: Resources
+title: Recursos
 parent: Concepts
 tableOfContents:
   maxHeadingLevel: 4
@@ -7,68 +7,67 @@ tableOfContents:
 
 import { LinkOut } from "@interledger/docs-design-system";
 
-The Open Payments APIs are served by a resource server. Operations on the APIs require the client to have a valid access token issued by a trusted authorization server.
+Las API de Pagos abiertos son gestionadas por un servidor de recursos. Las operaciones en las API requieren que el cliente tenga un token de acceso válido emitido por un servidor de autorizaciones de confianza.
 
-## Resource types
+## Tipos de Recursos
 
-The Open Payments Resource Server API is a simple REST API with three resource types: `incoming-payment`, `quote`, and `outgoing-payment`.
+La API del servidor de recursos de Pagos abiertos es una API REST simple con tres tipos de recursos: `incoming-payment`, `quote` y `outgoing-payment`.
 
-### incoming-payment
+### Pago Entrante (incoming-payment)
 
-The `incoming-payment` resource is often the first resource created in the Open Payments flow on the recipient's account. When created, the recipient's ASE returns unique payment details to the client that can be used to address payments to the account. Any payments received using these details are then associated with the `incoming-payment` resource.
+El recurso de pago entrante `incoming-payment` suele ser el primer recurso creado en el flujo de Pagos Abiertos en la cuenta del destinatario. Una vez creado, el ASE del destinatario devuelve al cliente datos de pago únicos que pueden utilizarse para realizar pagos a la cuenta. Cualquier pago recibido con estos datos se asocia entonces al recurso de pago entrante `incoming-payment`.
 
-A client can issue requests to get an incoming payment’s specific details, as well as list all incoming payments in order to, for example, provide the recipient with transaction details and history.
+Un cliente puede solicitar los datos específicos de un pago entrante, así como listar todos los pagos entrantes para, por ejemplo, proporcionar al destinatario los detalles y el historial de las transacciones.
 
-**Create an incoming payment without specifying an `incomingAmount`**
+**Cree un pago entrante sin especificar un monto entrante`incomingAmount`**
 
-When a request to create an `incoming-payment` resource includes an `incomingAmount`, the `incomingAmount` is the maximum amount to pay into the recipient's account. In other words, it's the amount that the recipient should receive.
+Cuando una solicitud para crear un recurso de "pago entrante" `incoming-payment` incluye un monto entrante`incomingAmount`, y este es el importe máximo que se ingresará en la cuenta del destinatario. En otras palabras, es el importe que el destinatario debería recibir.
 
-Instead of specifying the amount to be received, you can specify how much you want to send by:
+En lugar de especificar la cantidad a recibir, puedes especificar cuánto quieres enviar:
 
-1. Excluding the `incomingAmount` in the request
-2. Including a `debitAmount` of the amount you want to send within a <LinkOut href="https://openpayments.dev/apis/resource-server/operations/create-quote/">Create Quote</LinkOut> request (referred to as a fixed-send quote)
-3. Creating an outgoing payment request that includes the `quoteId` of the above quote
+1. Excluyendo el monto entrante `incomingAmount` en la solicitud.
+2. Incluir un `debitAmount` del monto que desea enviar dentro de una solicitud <LinkOut href="https://openpayments.dev/apis/resource-server/operations/create-quote/">Crear cotización</LinkOut> (conocida como cotización de envío fijo)
+3. Creación de una solicitud de pago saliente que incluya el `quoteId` de la cotización anterior.
 
-The outgoing payment is created and funds are sent to the `incoming-payment` resource. However, the `incomingAmount` was never set, so there's no indicator on the recipient's side for how much to expect. The recipient's ASE won't know when the payment has completed.
+Se crea el pago saliente y los fondos se envían al recurso `incoming-payment`. Sin embargo, el `incomingAmount` nunca se configuró, por lo que el destinatario no tiene ningún indicador de cuánto esperar. El ASE del destinatario no sabrá cuándo se ha completado el pago.
 
-Instead of waiting for the payment session to expire, the client can issue an explicit request to manually <LinkOut href='https://openpayments.dev/apis/resource-server/operations/complete-incoming-payment/'>complete the incoming payment</LinkOut> to indicate no further payments will be sent.
+En lugar de esperar a que expire la sesión de pago, el cliente puede emitir una solicitud explícita para <LinkOut href='https://openpayments.dev/apis/resource-server/operations/complete-incoming-payment/'>completar manualmente el pago entrante</LinkOut> para indicar que no se enviarán más pagos.
 
-:::tip[Use case: streaming Web Monetization payments]
-In streaming Web Monetization payments, the maximum amount to be paid is unknown to the recipient's ASE. Payments continue to stream until the Web Monetization agent ends the session. At this point, the Web Monetization agent can request to mark the incoming payment as complete. This enables the recipient's ASE to be notified as soon as possible that no further payments will be sent and to credit the recipient's account.
+:::tip[Caso de uso: Pagos de Monetización Web en streaming]
+En los pagos de Monetización Web en streaming, el ASE del destinatario desconoce el importe máximo a pagar. Los pagos continúan en streaming hasta que el agente de Monetización Web finaliza la sesión. En ese momento, el agente de Monetización Web puede solicitar que se marque el pago entrante como completado. Esto permite notificar al ASE del destinatario lo antes posible que no se enviarán más pagos y abonarlos en su cuenta.
 :::
 
-### quote
+### Cotización (Quote)
 
-After an `incoming-payment` resource is created on the recipient's account, a `quote` resource is typically created on the sender's account.
+Después de que se crea un recurso de pago entrante `incoming-payment` en la cuenta del receptor, normalmente se crea un recurso de cotización `quote` en la cuenta del remitente.
 
-The purpose of a quote is to indicate how much it will cost, including any applicable fees, to make the payment. The quote serves as a commitment from the sender's ASE to deliver a particular amount to the recipient's ASE. A quote is only valid for a limited time.
+El propósito de una cotización es indicar cuánto costará realizar el pago, incluidas las tarifas aplicables. La cotización funciona como un compromiso por parte del ASE del remitente para entregar un monto específico al ASE del receptor. Una cotización solo es válida por un tiempo limitado.
 
-There are three types of quotes.
+Existen tres tipos de cotización:
 
-- **Fixed-send quote** - A fixed amount will be paid from the _sender’s_ account. A `debitAmount` is required for this type. With this quote type, an incoming payment can't automatically complete until it expires. Instead of waiting for the expiration, the client can issue a <LinkOut href='https://openpayments.dev/apis/resource-server/operations/complete-incoming-payment/'>Complete Incoming Payment request</LinkOut> when the outgoing payment is complete.
-- **Fixed-receive quote** - A fixed amount will be paid into the _recipient's_ account. A `receiveAmount` is required for this type.
-- **Quote with incomingAmount** - The incoming payment already has a defined `incomingAmount`. For this type, the `receiver` is the URL of the `incoming-payment` resource that will be paid into, indicated by `/incoming-payments` being part of the URL.
+- **Cotización de envío fijo (Fixed-send quote)** - Cotización de envío fijo (Fixed-send quote): Se pagará un monto fijo desde la cuenta del remitente _sender’s_ account. Este tipo requiere un `debitAmount`. Con esta cotización, el pago entrante no puede completarse automáticamente hasta que expire. En lugar de esperar a que expire, el cliente puede emitir una solicitud de "Completar Pago Entrante" (Complete Incoming Payment) <LinkOut href='https://openpayments.dev/apis/resource-server/operations/complete-incoming-payment/'>Complete Incoming Payment request</LinkOut> cuando el pago saliente se haya completado.
+- **Cotización de recepción fija (Fixed-receive quote):** - El pago entrante ya tiene un `incomingAmount` definido. Para este tipo, el receptor  `receiver` es la URL del recurso de pago entrante `incoming-payment` al que se realizará el abono, indicada por la presencia de `/incoming-payments` en la URL.
 
-A successfully created `quote` resource results in the generation of a quote `id` in the form of a URL.
+Un recurso de cotización `quote` creado correctamente da como resultado la generación de un  `id` de cotización en forma de URL.
 
-### outgoing-payment
+### Pago Saliente (outgoing-payment)
 
-After a quote resource is created, it’s almost time to create the `outgoing-payment` resource on the sender's account. The purpose of the `outgoing-payment` resource is to serve as an instruction to make a payment from the sender's account.
+Tras crear un recurso de cotización, es casi el momento de crear el recurso `outgoing-payment` en la cuenta del remitente. El propósito de este recurso es servir como instrucción para realizar un pago `outgoing-payment` desde la cuenta del remitente.
 
-Open Payments separates payment instructions from the actual execution of payments, allowing applications to issue payment requests without being registered financial service providers themselves. This structure ensures that applications don't need to handle sensitive financial data directly, reducing risk and complexity.
+Open Payments separa las instrucciones de pago de su ejecución, lo que permite a las aplicaciones emitir solicitudes de pago sin estar registradas como proveedores de servicios financieros. Esta estructura garantiza que las aplicaciones no tengan que gestionar directamente datos financieros confidenciales, lo que reduce el riesgo y la complejidad.
 
-Open Payments requires the sender to explicitly consent to the creation of the resource before the client can issue the create request. Consent is obtained through an [interactive grant](/concepts/auth/#outgoing-payment).
+Open Payments requiere que el remitente dé su consentimiento explícito para la creación del recurso antes de que el cliente pueda emitir la solicitud de creación. El consentimiento se obtiene mediante una concesión interactiva [interactive grant](/concepts/auth/#pagos-saliente-outgoing-payment).
 
-Within the request to create the `outgoing-payment` resource is the recipient wallet address, so the sender's ASE knows where to send the payment, and the quote resource’s ID, where the payment amounts are defined.
+Dentro de la solicitud para crear el recurso `outgoing-payment` está la dirección de la billetera del destinatario, para que el ASE del remitente sepa dónde enviar el pago, y el ID del recurso de cotización, donde se definen los montos de pago.
 
-:::note[Creating an outgoing payment without a quote]
-A quote is not always required for creating an outgoing payment. In cases where the sender doesn't need to specify the amount the recipient will receive (like <LinkOut href='https://webmonetization.org'>Web Monetization</LinkOut>, for example), the outgoing payment can be created using an `incomingPayment` and `debitAmount` instead.
+:::note[Creando un pago saliente sin una cotización]
+No siempre se requiere una cotización para crear un pago saliente. En los casos en que el remitente no necesita especificar el importe que recibirá el destinatario (como en <LinkOut href='https://webmonetization.org'>Web Monetization</LinkOut>, por ejemplo), el pago saliente puede crearse usando `incomingPayment` y `debitAmount`.
 :::
 
-After the `outgoing-payment` resource is created, the incoming payment can complete, either automatically or manually, to end the Open Payments flow. Now it’s up to the sender's ASE to settle with the recipient's ASE over a shared payment rail.
+Tras crear el recurso de pago saliente `outgoing-payment`, el pago entrante puede completarse, ya sea automática o manualmente, para finalizar el flujo de Pagos Abiertos. Ahora, el ASE del remitente debe liquidar con el ASE del destinatario mediante un canal de pago compartido.
 
-An `outgoing-payment` resource can represent a payment that will be, is currently being, or has previously been sent from the sender's account. A client can issue requests to get an outgoing payment’s specific details and list all outgoing payments in order to, for example, provide the sender with transaction details and history.
+Un recurso de pago `outgoing-payment` saliente puede representar un pago que se enviará, se está enviando o se ha enviado previamente desde la cuenta del remitente. Un cliente puede solicitar los detalles específicos de un pago saliente y listar todos los pagos salientes para, por ejemplo, proporcionar al remitente los detalles y el historial de las transacciones.
 
-## Related grants
+## Subvenciones relacionadas
 
-For more information on the authorization server and grant types, refer to [Grant types](/concepts/auth/#grant-types).
+Para obtener más información sobre el servidor de autorización y los tipos de subvención, consulte [Tipos de subvención](/concepts/auth/#tipos-de-subvenciones).
