@@ -61,26 +61,44 @@ export default defineConfig({
           items: [
             {
               label: "Concepts",
+              translations: {
+                es: "Conceptos",
+              },
               collapsed: false,
               items: [
                 {
                   label: "Wallet addresses",
+                  translations: {
+                    es: "Direcciones de billetera",
+                  },
                   link: "/concepts/wallet-addresses/",
                 },
                 {
                   label: "Resources",
+                  translations: {
+                    es: "Recursos",
+                  },
                   link: "/concepts/resources/",
                 },
                 {
                   label: "Authorization",
+                  translations: {
+                    es: "Autorización",
+                  },
                   link: "/concepts/auth/",
                 },
                 {
                   label: "Payment methods",
+                  translations: {
+                    es: "Métodos de pago",
+                  },
                   link: "/concepts/payments/",
                 },
                 {
                   label: "Open Payments flow",
+                  translations: {
+                    es: "Flujo de Pagos Abiertos",
+                  },
                   link: "/concepts/op-flow/",
                 },
               ],
@@ -89,22 +107,35 @@ export default defineConfig({
         },
         {
           label: "Guides",
+          translations: {
+            es: "Guías",
+          },
           collapsed: true,
           items: [
             {
               label: "Make a one-time payment",
+              translations: {
+                es: "Hacer un pago único",
+              },
               link: "/guides/make-onetime-payment/",
             },
             {
               label: "Make recurring payments",
+              translations: {
+                es: "Hacer pagos recurrentes",
+              },
               link: "/guides/make-recurring-payments/",
             },
             {
               label: "Split an incoming payment",
+              translations: {
+                es: "Dividir un pago entrante",
+              },
               link: "/guides/split-payments/",
             },
             {
               label: "Get an outgoing payment grant for future payments",
+              
               link: "/guides/outgoing-grant-future-payments/",
               badge: "New",
             },
