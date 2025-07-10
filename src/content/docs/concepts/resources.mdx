@@ -56,7 +56,7 @@ Tras crear un recurso de cotización, es casi el momento de crear el recurso `ou
 
 Open Payments separa las instrucciones de pago de su ejecución, lo que permite a las aplicaciones emitir solicitudes de pago sin estar registradas como proveedores de servicios financieros. Esta estructura garantiza que las aplicaciones no tengan que gestionar directamente datos financieros confidenciales, lo que reduce el riesgo y la complejidad.
 
-Open Payments requiere que el remitente dé su consentimiento explícito para la creación del recurso antes de que el cliente pueda emitir la solicitud de creación. El consentimiento se obtiene mediante una concesión interactiva [interactive grant](/concepts/auth/#outgoing-payment).
+Open Payments requiere que el remitente dé su consentimiento explícito para la creación del recurso antes de que el cliente pueda emitir la solicitud de creación. El consentimiento se obtiene mediante una concesión interactiva [interactive grant](/concepts/auth/#pagos-saliente-outgoing-payment).
 
 Dentro de la solicitud para crear el recurso `outgoing-payment` está la dirección de la billetera del destinatario, para que el ASE del remitente sepa dónde enviar el pago, y el ID del recurso de cotización, donde se definen los montos de pago.
 
@@ -70,4 +70,4 @@ Un recurso de pago `outgoing-payment` saliente puede representar un pago que se 
 
 ## Subvenciones relacionadas
 
-Para obtener más información sobre el servidor de autorización y los tipos de subvención, consulte [Tipos de subvención](/concepts/auth/#grant-types).
+Para obtener más información sobre el servidor de autorización y los tipos de subvención, consulte [Tipos de subvención](/concepts/auth/#tipos-de-subvenciones).
