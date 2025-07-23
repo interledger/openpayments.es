@@ -7,14 +7,14 @@ parent: Concepts
 Una dirección de billetera es un identificador seguro y con la funcionalidad de ser compartido en una cuenta de Pagos Abiertos. Cada dirección de billetera actúa como punto de acceso de servicio en las API, lo que permite a los clientes interactuar con la cuenta subyacente.
 :::
 
-En el centro de todas las interacciones en Pagos  se encuentra una cuenta habilitada para Pagos Abiertos. Cada cuenta habilitada para Pagos Abiertos se identifica mediante una o más URL. Estas URL no solo son identificadores de cuenta, sino también puntos finales de servicio para acceder a las API de Pagos Abiertos. Estas URL se denominan direcciones de billetera. No todas las URL son direcciones de billetera, pero todas las direcciones de billetera son URL.
+En el centro de todas las interacciones en Pagos se encuentra una cuenta habilitada para Pagos Abiertos. Cada cuenta habilitada para Pagos Abiertos se identifica mediante una o más URL. Estas URL no solo son identificadores de cuenta, sino también puntos finales de servicio para acceder a las API de Pagos Abiertos. Estas URL se denominan direcciones de billetera. No todas las URL son direcciones de billetera, pero todas las direcciones de billetera son URL.
 
 ## ¿Cómo está construida una dirección de Billetera?
 
 Una URL solo es una dirección de billetera si cumple los siguientes criterios:
 
 - El servidor que gestiona las solicitudes HTTP admite el protocolo de Pagos Abiertos en la URL.
-- La URL utiliza el protocolo `https` y no contiene partes de `user-info`, `port`, `query string`, o `fragment`. 
+- La URL utiliza el protocolo `https` y no contiene partes de `user-info`, `port`, `query string`, o `fragment`.
 
 ### Verificación de la dirección de billetera
 
