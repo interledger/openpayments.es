@@ -2,13 +2,13 @@
 title: Make recurring payments
 ---
 
-import { CodeBlock, LinkOut } from '@interledger/docs-design-system'
-import { Tabs, TabItem } from '@astrojs/starlight/components'
-import HttpSig from '/src/partials/http-msg-sig-note.mdx'
-import ChunkedSnippet from '/src/components/ChunkedSnippet.astro'
-import Ts from '/src/partials/ts-import-initialize.mdx'
-import StartInteraction from '/src/partials/grant-start-interaction.mdx'
-import FinishInteraction from '/src/partials/grant-finish-interaction.mdx'
+import { CodeBlock, LinkOut } from "@interledger/docs-design-system";
+import { Tabs, TabItem } from "@astrojs/starlight/components";
+import HttpSig from "/src/partials/http-msg-sig-note.mdx";
+import ChunkedSnippet from "/src/components/ChunkedSnippet.astro";
+import Ts from "/src/partials/ts-import-initialize.mdx";
+import StartInteraction from "/src/partials/grant-start-interaction.mdx";
+import FinishInteraction from "/src/partials/grant-finish-interaction.mdx";
 
 :::tip[Summary]
 Add support for recurring payments to your client. A recurring payment requires the sender's authorization once, then automatically pays out at regular intervals.
@@ -20,7 +20,7 @@ This guide provides steps for making recurring payments, in which a single outgo
 
 ## Dependencies
 
-- <LinkOut href='https://github.com/interledger/open-payments/tree/main/packages/open-payments'>
+- <LinkOut href="https://github.com/interledger/open-payments/tree/main/packages/open-payments">
     Open Payments SDK
   </LinkOut>
 
@@ -28,22 +28,22 @@ This guide provides steps for making recurring payments, in which a single outgo
 
 ## Endpoints
 
-- <LinkOut href='https://openpayments.dev/apis/auth-server/operations/post-request/'>
+- <LinkOut href="https://openpayments.dev/apis/auth-server/operations/post-request/">
     Grant Request
   </LinkOut>
-- <LinkOut href='https://openpayments.dev/apis/wallet-address-server/operations/get-wallet-address/'>
+- <LinkOut href="https://openpayments.dev/apis/wallet-address-server/operations/get-wallet-address/">
     Get a Wallet address
   </LinkOut>
-- <LinkOut href='https://openpayments.dev/apis/resource-server/operations/create-incoming-payment/'>
+- <LinkOut href="https://openpayments.dev/apis/resource-server/operations/create-incoming-payment/">
     Create an Incoming Payment
   </LinkOut>
-- <LinkOut href='https://openpayments.dev/apis/resource-server/operations/create-quote/'>
+- <LinkOut href="https://openpayments.dev/apis/resource-server/operations/create-quote/">
     Create a Quote
   </LinkOut>
-- <LinkOut href='https://openpayments.dev/apis/resource-server/operations/create-outgoing-payment/'>
+- <LinkOut href="https://openpayments.dev/apis/resource-server/operations/create-outgoing-payment/">
     Create an Outgoing Payment
   </LinkOut>
-- <LinkOut href='https://openpayments.dev/apis/auth-server/operations/post-token/'>
+- <LinkOut href="https://openpayments.dev/apis/auth-server/operations/post-token/">
     Rotate an Access Token
   </LinkOut>
 
@@ -56,8 +56,8 @@ This guide provides steps for making recurring payments, in which a single outgo
 ### 1. Get recipient's wallet address information
 
 <ChunkedSnippet
-  source='https://raw.githubusercontent.com/interledger/open-payments-snippets/main/grant/grant-outgoing-payment.ts'
-  chunk='3'
+  source="https://raw.githubusercontent.com/interledger/open-payments-snippets/main/grant/grant-outgoing-payment.ts"
+  chunk="3"
 />
 
 ### 2. Request an Incoming Payment grant
@@ -65,8 +65,8 @@ This guide provides steps for making recurring payments, in which a single outgo
 Request an `incomingPayment` grant from the recipient wallet's authorization server.
 
 <ChunkedSnippet
-  source='https://raw.githubusercontent.com/interledger/open-payments-snippets/main/grant/grant-incoming-payment.ts'
-  chunk='4'
+  source="https://raw.githubusercontent.com/interledger/open-payments-snippets/main/grant/grant-incoming-payment.ts"
+  chunk="4"
 />
 
 ### 3. Create an Incoming Payment
@@ -82,8 +82,8 @@ Add the `incomingAmount` object and define the following properties:
 Optionally you may add the `expiresAt` property which is the date and time after which payments to the incoming payments will no longer be accepted.
 
 <ChunkedSnippet
-  source='https://raw.githubusercontent.com/interledger/open-payments-snippets/main/incoming-payment/incoming-payment-create.ts'
-  chunk='3'
+  source="https://raw.githubusercontent.com/interledger/open-payments-snippets/main/incoming-payment/incoming-payment-create.ts"
+  chunk="3"
 />
 
 ### 4. Request a Quote grant
@@ -91,8 +91,8 @@ Optionally you may add the `expiresAt` property which is the date and time after
 Request a `quote` grant from the sender wallet's authorization server.
 
 <ChunkedSnippet
-  source='https://raw.githubusercontent.com/interledger/open-payments-snippets/main/grant/grant-quote.ts'
-  chunk='4'
+  source="https://raw.githubusercontent.com/interledger/open-payments-snippets/main/grant/grant-quote.ts"
+  chunk="4"
 />
 
 ### 5. Create a Quote
@@ -106,8 +106,8 @@ Add the following properties:
 - `receiver` : the URL of the incoming payment that will receive the payment.
 
 <ChunkedSnippet
-  source='https://raw.githubusercontent.com/interledger/open-payments-snippets/main/quote/quote-create.ts'
-  chunk='3'
+  source="https://raw.githubusercontent.com/interledger/open-payments-snippets/main/quote/quote-create.ts"
+  chunk="3"
 />
 
 ### 6. Request an interactive Outgoing Payment grant
@@ -141,13 +141,13 @@ Now indicate your client can receive a signal from the authorization server when
 4. Create a `nonce` for your client to use to verify the authorization server is the same entity throughout the entire process. The nonce can be any random, hard-to-guess string.
 
 <ChunkedSnippet
-  source='https://raw.githubusercontent.com/interledger/open-payments-snippets/main/grant/grant-outgoing-payment.ts'
-  chunk='4'
+  source="https://raw.githubusercontent.com/interledger/open-payments-snippets/main/grant/grant-outgoing-payment.ts"
+  chunk="4"
 />
 
 <ChunkedSnippet
-  source='https://raw.githubusercontent.com/interledger/open-payments-snippets/main/grant/grant-outgoing-payment.ts'
-  chunk='5'
+  source="https://raw.githubusercontent.com/interledger/open-payments-snippets/main/grant/grant-outgoing-payment.ts"
+  chunk="5"
 />
 
 ### 7. Start interaction with the user
@@ -165,8 +165,8 @@ After the user completes their interaction with the identity provider (IdP), the
 Add the authorization server’s interaction reference as the `interact_ref` value to the body of your continuation request.
 
 <ChunkedSnippet
-  source='https://raw.githubusercontent.com/interledger/open-payments-snippets/main/grant/grant-continuation.ts'
-  chunk='3'
+  source="https://raw.githubusercontent.com/interledger/open-payments-snippets/main/grant/grant-continuation.ts"
+  chunk="3"
 />
 
 Issue the request to the `continue uri` supplied in the authorization server’s initial grant response. For example:
@@ -218,8 +218,8 @@ Add the following properties:
 - `quoteId` : the URL of the quote specifying the payment amount.
 
 <ChunkedSnippet
-  source='https://raw.githubusercontent.com/interledger/open-payments-snippets/main/outgoing-payment/outgoing-payment-create.ts'
-  chunk='3'
+  source="https://raw.githubusercontent.com/interledger/open-payments-snippets/main/outgoing-payment/outgoing-payment-create.ts"
+  chunk="3"
 />
 
 ### 11. Rotate the Access Token
@@ -231,8 +231,8 @@ This step is only required if the access token you obtained in the previous `out
 Rotate the access token obtained from the previous `outgoingPayment` grant request.
 
 <ChunkedSnippet
-  source='https://raw.githubusercontent.com/interledger/open-payments-snippets/main/token/token-rotate.ts'
-  chunk='3'
+  source="https://raw.githubusercontent.com/interledger/open-payments-snippets/main/token/token-rotate.ts"
+  chunk="3"
 />
 
 ### 12. Create another Outgoing Payment
@@ -245,8 +245,8 @@ Add the following properties:
 - `quoteId` : the URL of the quote specifying the payment amount.
 
 <ChunkedSnippet
-  source='https://raw.githubusercontent.com/interledger/open-payments-snippets/main/outgoing-payment/outgoing-payment-create.ts'
-  chunk='3'
+  source="https://raw.githubusercontent.com/interledger/open-payments-snippets/main/outgoing-payment/outgoing-payment-create.ts"
+  chunk="3"
 />
 
 ### 13. Make recurring Outgoing Payments
