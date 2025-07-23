@@ -20,12 +20,6 @@ Setting up the extension requires the user to connect it to their wallet account
 
 In this guide, you’ll assume the role of an app developer. The guide takes you through the steps your app will perform to receive an outgoing payment grant with a specified debit amount but no known recipients. The example scenario illustrates how to allow your app’s user to send payments of up to $100 CAD a month for three months.
 
-## Dependencies
-
-- <LinkOut href="https://github.com/interledger/open-payments/tree/main/packages/open-payments">
-    Open Payments TypeScript SDK
-  </LinkOut>
-
 ## Endpoints
 
 - <LinkOut href="https://openpayments.dev/apis/wallet-address-server/operations/get-wallet-address/">
@@ -42,7 +36,7 @@ In this guide, you’ll assume the role of an app developer. The guide takes you
 
 ### 1. Get wallet address information
 
-Let’s assume your user saved their wallet address in their account profile when setting up your app. Call the [Get Wallet Address API](/apis/wallet-address-server/operations/get-wallet-address) to get required details about your user's wallet account.
+Let’s assume your user saved their wallet address in their account profile when setting up your app. Call the <LinkOut href="https://openpayments.dev/apis/wallet-address-server/operations/get-wallet-address">Get Wallet Address API</LinkOut> to get required details about your user's wallet account.
 
 <Tabs syncKey="lang">
 <TabItem label='TypeScript/JavaScript' icon='seti:javascript'>
@@ -56,7 +50,7 @@ Let’s assume your user saved their wallet address in their account profile whe
 
 ### 2. Request an interactive outgoing payment grant
 
-Use the authorization server information received in the previous step to call the [Grant Request API](/apis/auth-server/operations/post-request). The purpose of this call is to obtain a token that allows your client to request outgoing payment resources be created on your user's wallet account.
+Use the authorization server information received in the previous step to call the <LinkOut href="https://openpayments.dev/apis/auth-server/operations/post-request">GrantRequest API</LinkOut>. The purpose of this call is to obtain a token that allows your client to request outgoing payment resources be created on your user's wallet account.
 
 <InteractionReq />
 
